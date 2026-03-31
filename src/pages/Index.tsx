@@ -5,6 +5,7 @@ type Screen =
   | "home"
   | "register"
   | "profile"
+  | "scanner"
   | "bonuses"
   | "history"
   | "market"
@@ -21,10 +22,10 @@ export default function Index() {
 
   const navItems = [
     { id: "home", icon: "Home", label: "Главная" },
+    { id: "scanner", icon: "ScanLine", label: "Сканер" },
     { id: "bonuses", icon: "Leaf", label: "Бонусы" },
     { id: "market", icon: "ShoppingBag", label: "Маркет" },
     { id: "map", icon: "MapPin", label: "Карта" },
-    { id: "support", icon: "MessageCircle", label: "Помощь" },
   ] as const;
 
   return (
@@ -66,6 +67,7 @@ export default function Index() {
             />
           )}
           {screen === "profile" && <ProfileScreen onBack={() => setScreen("home")} bonuses={bonuses} />}
+          {screen === "scanner" && <ScannerScreen onBack={() => setScreen("home")} />}
           {screen === "bonuses" && <BonusesScreen bonuses={bonuses} />}
           {screen === "history" && <HistoryScreen onBack={() => setScreen("home")} />}
           {screen === "market" && <MarketScreen bonuses={bonuses} />}
@@ -440,6 +442,213 @@ function ProfileScreen({ onBack, bonuses }: { onBack: () => void; bonuses: numbe
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ─────────── SCANNER ─────────── */
+function ScannerScreen({ onBack }: { onBack: () => void }) {
+  const [phase, setPhase] = useState<"scan" | "confirm" | "success">("scan");
+  const [earned] = useState(45);
+
+  const fakePoints = [
+    { x: 22, y: 30 }, { x: 78, y: 25 }, { x: 18, y: 72 }, { x: 80, y: 75 },
+  ];
+
+  return (
+    <div className="flex flex-col min-h-full bg-black">
+      {/* Header */}
+      <div className="relative px-5 pt-5 pb-3 flex items-center justify-between z-20">
+        <button
+          onClick={onBack}
+          className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center"
+        >
+          <Icon name="ArrowLeft" size={18} className="text-white" />
+        </button>
+        <span className="text-white font-bold text-base">Сканер QR</span>
+        <button className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center">
+          <Icon name="Zap" size={18} className="text-white" />
+        </button>
+      </div>
+
+      {phase === "scan" && (
+        <>
+          {/* Camera area */}
+          <div className="relative flex-1 flex items-center justify-center" style={{ minHeight: 340 }}>
+            {/* Dark overlay with cutout */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 bg-black/60" />
+              <div
+                className="relative z-10 rounded-3xl"
+                style={{ width: 240, height: 240, boxShadow: "0 0 0 9999px rgba(0,0,0,0.6)" }}
+              >
+                {/* Animated scan line */}
+                <div
+                  className="absolute left-4 right-4 h-0.5 rounded-full z-20"
+                  style={{
+                    background: "linear-gradient(90deg, transparent, #4caf6f, transparent)",
+                    animation: "scanLine 2s ease-in-out infinite",
+                    top: "50%",
+                  }}
+                />
+                <style>{`
+                  @keyframes scanLine {
+                    0%, 100% { top: 15%; opacity: 0.6; }
+                    50% { top: 85%; opacity: 1; }
+                  }
+                `}</style>
+
+                {/* Corner brackets */}
+                {[
+                  { top: 0, left: 0, borderTop: "3px solid #4caf6f", borderLeft: "3px solid #4caf6f", borderRadius: "12px 0 0 0" },
+                  { top: 0, right: 0, borderTop: "3px solid #4caf6f", borderRight: "3px solid #4caf6f", borderRadius: "0 12px 0 0" },
+                  { bottom: 0, left: 0, borderBottom: "3px solid #4caf6f", borderLeft: "3px solid #4caf6f", borderRadius: "0 0 0 12px" },
+                  { bottom: 0, right: 0, borderBottom: "3px solid #4caf6f", borderRight: "3px solid #4caf6f", borderRadius: "0 0 12px 0" },
+                ].map((s, i) => (
+                  <div key={i} className="absolute w-7 h-7" style={s} />
+                ))}
+
+                {/* Fake QR grid */}
+                <div className="absolute inset-6 grid grid-cols-7 gap-0.5 opacity-20">
+                  {Array.from({ length: 49 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="rounded-sm"
+                      style={{ background: Math.random() > 0.4 ? "#fff" : "transparent", aspectRatio: "1" }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="px-5 pb-6 z-20">
+            <p className="text-white/70 text-sm text-center mb-6">
+              Наведите камеру на QR-код в пункте приёма вторсырья
+            </p>
+
+            {/* QR dots animation */}
+            <div className="flex justify-center gap-2 mb-6">
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full"
+                  style={{
+                    background: "#4caf6f",
+                    animation: `wave 1.2s ease-in-out infinite`,
+                    animationDelay: `${i * 0.2}s`,
+                  }}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => setPhase("confirm")}
+              className="w-full py-4 rounded-2xl font-bold text-white text-base shimmer-btn"
+              style={{ background: "linear-gradient(135deg, #2d8f4e, #8bc34a)" }}
+            >
+              Симулировать сканирование
+            </button>
+
+            <div className="mt-3 p-3 rounded-2xl flex items-center gap-2" style={{ background: "rgba(255,255,255,0.08)" }}>
+              <Icon name="Info" size={15} className="text-green-400 shrink-0" />
+              <p className="text-white/60 text-xs">QR-код выдаётся сотрудником пункта приёма после взвешивания сырья</p>
+            </div>
+          </div>
+        </>
+      )}
+
+      {phase === "confirm" && (
+        <div className="flex-1 px-5 py-4 flex flex-col animate-scale-in">
+          <div
+            className="rounded-3xl p-5 mb-4"
+            style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
+          >
+            <p className="text-green-400 text-xs uppercase tracking-widest font-semibold mb-3">QR отсканирован</p>
+
+            {/* Fake QR decoded */}
+            <div
+              className="w-28 h-28 rounded-2xl mx-auto mb-4 flex items-center justify-center relative overflow-hidden"
+              style={{ background: "white" }}
+            >
+              <div className="grid grid-cols-7 gap-0.5 p-2 w-full h-full">
+                {Array.from({ length: 49 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="rounded-sm"
+                    style={{ background: [0,1,7,8,14,6,13,42,43,48,47,41,35,36,24,25].includes(i) ? "#1a5c2e" : "transparent" }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              {[
+                { label: "Пункт приёма", value: "ЭкоПункт — 22 Партсъезда, 1Г" },
+                { label: "Материал", value: "Пластик ПЭТ, 1.8 кг" },
+                { label: "Дата", value: "31 марта 2026, 14:22" },
+                { label: "Начислено бонусов", value: `+${earned} ЭКО` },
+              ].map((row) => (
+                <div key={row.label} className="flex justify-between py-2 border-b border-white/10 last:border-0">
+                  <span className="text-white/50 text-sm">{row.label}</span>
+                  <span
+                    className="font-bold text-sm"
+                    style={{ color: row.label === "Начислено бонусов" ? "#4caf6f" : "white" }}
+                  >
+                    {row.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={() => setPhase("success")}
+            className="w-full py-4 rounded-2xl font-bold text-white text-base mb-2 shimmer-btn"
+            style={{ background: "linear-gradient(135deg, #2d8f4e, #8bc34a)" }}
+          >
+            Подтвердить начисление
+          </button>
+          <button onClick={() => setPhase("scan")} className="w-full py-3 text-white/50 text-sm">
+            Сканировать заново
+          </button>
+        </div>
+      )}
+
+      {phase === "success" && (
+        <div className="flex-1 flex flex-col items-center justify-center px-5 animate-scale-in">
+          <div
+            className="w-28 h-28 rounded-full flex items-center justify-center mb-5 animate-bounce-in"
+            style={{ background: "linear-gradient(135deg, #2d8f4e, #8bc34a)" }}
+          >
+            <Icon name="Check" size={52} className="text-white" />
+          </div>
+          <h3 className="text-white text-2xl font-black mb-1">+{earned} ЭКО</h3>
+          <p className="text-green-400 text-base font-semibold mb-1">Бонусы начислены!</p>
+          <p className="text-white/50 text-sm mb-8 text-center">
+            Спасибо за сдачу вторсырья на пункте<br />22 Партсъезда, 1Г
+          </p>
+
+          <div
+            className="w-full rounded-2xl p-4 flex items-center gap-3 mb-4"
+            style={{ background: "rgba(76,175,111,0.15)", border: "1px solid rgba(76,175,111,0.3)" }}
+          >
+            <span className="text-2xl">🌍</span>
+            <div>
+              <p className="text-white font-semibold text-sm">Вы сохранили природу!</p>
+              <p className="text-green-400 text-xs">1.8 кг пластика не попало на свалку</p>
+            </div>
+          </div>
+
+          <button
+            onClick={onBack}
+            className="w-full py-4 rounded-2xl font-bold text-white text-base"
+            style={{ background: "linear-gradient(135deg, #2d8f4e, #8bc34a)" }}
+          >
+            На главную
+          </button>
+        </div>
+      )}
     </div>
   );
 }
