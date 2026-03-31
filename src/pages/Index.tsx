@@ -121,7 +121,7 @@ function HomeScreen({ onNavigate, bonuses }: { onNavigate: (s: Screen) => void; 
         <div className="relative z-10 px-5 pt-5 pb-7">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-green-200 text-sm font-medium">Добро пожаловать!</p>
+              <p className="text-green-200 text-sm font-medium">Самарская область 🌍</p>
               <h1 className="text-white text-2xl font-black tracking-tight">ЭкоБонус 🌿</h1>
             </div>
             <button
@@ -199,9 +199,9 @@ function HomeScreen({ onNavigate, bonuses }: { onNavigate: (s: Screen) => void; 
         <h2 className="text-green-900 font-bold text-base mb-3">Новости эко-программы</h2>
         <div className="space-y-3 pb-4">
           {[
-            { emoji: "♻️", title: "Сдай вторсырьё — получи 50 бонусов!", time: "2 часа назад", color: "#e8f5e9" },
-            { emoji: "🎭", title: "Театр «Современник» — скидка 20% за бонусы", time: "вчера", color: "#fff8e1" },
-            { emoji: "🌳", title: "Новый пункт приёма в вашем районе", time: "3 дня назад", color: "#e8f5e9" },
+            { emoji: "♻️", title: "Сдай вторсырьё в Самаре — получи 50 бонусов!", time: "2 часа назад", color: "#e8f5e9" },
+            { emoji: "🎭", title: "СамАрт и Драмтеатр — скидка 20% за бонусы", time: "вчера", color: "#fff8e1" },
+            { emoji: "🌳", title: "Новый пункт приёма на ул. Ново-Садовой", time: "3 дня назад", color: "#e8f5e9" },
           ].map((n, i) => (
             <div
               key={i}
@@ -525,22 +525,22 @@ function HistoryScreen({ onBack }: { onBack: () => void }) {
     {
       date: "Сегодня",
       items: [
-        { emoji: "♻️", title: "Сдача макулатуры", subtitle: "Пункт «Чистый город»", amount: "+40", positive: true },
-        { emoji: "🎬", title: "Кинотеатр «Синема»", subtitle: "Оплата бонусами", amount: "-80", positive: false },
+        { emoji: "♻️", title: "Сдача макулатуры", subtitle: "Пункт «ЭкоСамара», Советский р-н", amount: "+40", positive: true },
+        { emoji: "🎬", title: "Кинотеатр «Вертикаль»", subtitle: "Оплата бонусами", amount: "-80", positive: false },
       ],
     },
     {
       date: "Вчера",
       items: [
-        { emoji: "🚲", title: "Велопоездка", subtitle: "Велосипед Whoosh", amount: "+10", positive: true },
-        { emoji: "🎭", title: "Театр Современник", subtitle: "Скидка на билет", amount: "-150", positive: false },
+        { emoji: "🚲", title: "Велопоездка", subtitle: "Самокат / Набережная Волги", amount: "+10", positive: true },
+        { emoji: "🎭", title: "Самарский драмтеатр", subtitle: "Скидка на билет", amount: "-150", positive: false },
       ],
     },
     {
       date: "28 марта",
       items: [
-        { emoji: "♻️", title: "Сдача стекла", subtitle: "Пункт «Экосбор»", amount: "+55", positive: true },
-        { emoji: "🛍️", title: "ВкусВилл", subtitle: "Покупка эко-товаров", amount: "+15", positive: true },
+        { emoji: "♻️", title: "Сдача стекла", subtitle: "Пункт «РециклТольятти»", amount: "+55", positive: true },
+        { emoji: "🛍️", title: "Магазин «Добрянка»", subtitle: "Покупка эко-товаров", amount: "+15", positive: true },
       ],
     },
   ];
@@ -586,22 +586,22 @@ function MarketScreen({ bonuses }: { bonuses: number }) {
     {
       title: "🎭 Театры",
       items: [
-        { name: "Современник", desc: "Скидка 25% на любой спектакль", price: 300 },
-        { name: "МХТ им. Чехова", desc: "Льготные билеты", price: 500 },
+        { name: "Самарский драмтеатр", desc: "Скидка 25% на любой спектакль", price: 300 },
+        { name: "СамАрт (ТЮЗ)", desc: "Льготные билеты для семей", price: 200 },
       ],
     },
     {
       title: "🏛️ Музеи",
       items: [
-        { name: "Третьяковская галерея", desc: "Бесплатный вход 1 раз/мес", price: 200 },
-        { name: "Зоопарк Москвы", desc: "Скидка 30% на посещение", price: 150 },
+        { name: "Музей Алабина", desc: "Бесплатный вход 1 раз/мес", price: 150 },
+        { name: "Самарский зоопарк", desc: "Скидка 30% на посещение", price: 120 },
       ],
     },
     {
       title: "🎬 Кино",
       items: [
-        { name: "КАРО Синема", desc: "Билет 2D за полцены", price: 80 },
-        { name: "IMAX", desc: "Скидка 20% на все сеансы", price: 120 },
+        { name: "Кинотеатр «Вертикаль»", desc: "Билет 2D за полцены", price: 80 },
+        { name: "IMAX Самара Молл", desc: "Скидка 20% на все сеансы", price: 120 },
       ],
     },
   ];
@@ -666,11 +666,11 @@ function MapScreen() {
   const [selected, setSelected] = useState<number | null>(null);
 
   const points = [
-    { id: 1, x: 30, y: 28, name: "Пункт «ЭкоСбор»", type: "Металл, стекло, пластик", rating: 4.8, emoji: "♻️" },
-    { id: 2, x: 62, y: 45, name: "Пункт «Чистый город»", type: "Макулатура, ПЭТ", rating: 4.6, emoji: "📦" },
-    { id: 3, x: 48, y: 65, name: "Эко-маркет «Зелёный»", type: "Партнёр, скидки", rating: 4.9, emoji: "🌿" },
-    { id: 4, x: 75, y: 30, name: "Пункт «РециклЦентр»", type: "Электроника, батарейки", rating: 4.5, emoji: "🔋" },
-    { id: 5, x: 20, y: 60, name: "Библиотека «Экознание»", type: "Партнёр, книги за бонусы", rating: 4.7, emoji: "📚" },
+    { id: 1, x: 30, y: 28, name: "ЭкоСамара — Советский р-н", type: "Металл, стекло, пластик", rating: 4.8, emoji: "♻️" },
+    { id: 2, x: 62, y: 45, name: "РециклТольятти — ул. Юбилейная", type: "Макулатура, ПЭТ, металл", rating: 4.6, emoji: "📦" },
+    { id: 3, x: 48, y: 65, name: "Эко-маркет «Волга», Самара", type: "Партнёр, скидки за бонусы", rating: 4.9, emoji: "🌿" },
+    { id: 4, x: 75, y: 30, name: "ЭкоПункт — Жигулёвск", type: "Электроника, батарейки", rating: 4.5, emoji: "🔋" },
+    { id: 5, x: 20, y: 60, name: "Библиотека им. Ленина, Самара", type: "Партнёр, книги за бонусы", rating: 4.7, emoji: "📚" },
   ];
 
   return (
@@ -680,7 +680,7 @@ function MapScreen() {
         <p className="text-green-200 text-sm">Пункты приёма и эко-партнёры</p>
         <div className="flex items-center gap-2 mt-3 bg-white/20 rounded-2xl px-4 py-2.5">
           <Icon name="Search" size={16} className="text-white opacity-70" />
-          <span className="text-white/60 text-sm">Адрес или метро...</span>
+          <span className="text-white/60 text-sm">Самара, Тольятти, Сызрань...</span>
         </div>
       </div>
 
@@ -825,7 +825,7 @@ function SupportScreen() {
           {[
             { icon: "MessageCircle", label: "Чат с нами", sub: "Ответим за 5 мин", color: "#2d8f4e" },
             { icon: "Phone", label: "Позвонить", sub: "8-800-123-45-67", color: "#5aab6e" },
-            { icon: "Mail", label: "Email", sub: "support@ecobonus.ru", color: "#8bc34a" },
+            { icon: "Mail", label: "Email", sub: "eco@samregion.ru", color: "#8bc34a" },
             { icon: "FileText", label: "Обращение", sub: "Официальный запрос", color: "#4caf6f" },
           ].map((item) => (
             <button
@@ -878,7 +878,7 @@ function SupportScreen() {
           </div>
           <div>
             <p className="text-green-900 font-bold text-sm">Экстренная линия</p>
-            <p className="text-green-600 text-xs">Горячая линия 24/7: 8-800-ЭКО-БОНУС</p>
+            <p className="text-green-600 text-xs">Министерство лесного хозяйства Самарской обл.</p>
           </div>
         </div>
       </div>
