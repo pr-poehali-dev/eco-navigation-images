@@ -10,6 +10,7 @@ type Screen =
   | "history"
   | "market"
   | "map"
+  | "rating"
   | "support";
 
 const BG_IMAGE =
@@ -24,8 +25,8 @@ export default function Index() {
     { id: "home", icon: "Home", label: "Главная" },
     { id: "scanner", icon: "ScanLine", label: "Сканер" },
     { id: "bonuses", icon: "Leaf", label: "Бонусы" },
+    { id: "rating", icon: "Trophy", label: "Рейтинг" },
     { id: "market", icon: "ShoppingBag", label: "Маркет" },
-    { id: "map", icon: "MapPin", label: "Карта" },
   ] as const;
 
   return (
@@ -72,6 +73,7 @@ export default function Index() {
           {screen === "history" && <HistoryScreen onBack={() => setScreen("home")} />}
           {screen === "market" && <MarketScreen bonuses={bonuses} />}
           {screen === "map" && <MapScreen />}
+          {screen === "rating" && <RatingScreen />}
           {screen === "support" && <SupportScreen />}
         </div>
 
@@ -864,6 +866,237 @@ function MarketScreen({ bonuses }: { bonuses: number }) {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────── RATING ─────────── */
+function RatingScreen() {
+  const [tab, setTab] = useState<"monthly" | "quarterly">("monthly");
+
+  const monthlyRanks = [
+    {
+      place: 1,
+      title: "Эко-лидер",
+      medal: "🥇",
+      gradient: "linear-gradient(135deg, #f6c94e, #e8a800)",
+      border: "#f6c94e",
+      name: "Мария К.",
+      points: 4_820,
+      desc: "Лидер месяца среди сдатчиков вторсырья",
+      icon: "Crown",
+    },
+    {
+      place: 2,
+      title: "Эко-активист",
+      medal: "🥈",
+      gradient: "linear-gradient(135deg, #c0d6e4, #8fafc2)",
+      border: "#c0d6e4",
+      name: "Дмитрий В.",
+      points: 3_610,
+      desc: "Активно участвует во всех акциях",
+      icon: "Flame",
+    },
+    {
+      place: 3,
+      title: "Эко-сторонник",
+      medal: "🥉",
+      gradient: "linear-gradient(135deg, #d4a574, #a97c4f)",
+      border: "#d4a574",
+      name: "Анна С.",
+      points: 2_940,
+      desc: "Постоянный участник программы",
+      icon: "Star",
+    },
+  ];
+
+  const quarterlyRanks = [
+    {
+      place: 1,
+      title: "Эко-герой квартала",
+      medal: "🏆",
+      gradient: "linear-gradient(135deg, #f6c94e, #e8a800)",
+      border: "#f6c94e",
+      name: "Александр Н.",
+      points: 14_200,
+      desc: "Лучший результат за 3 месяца",
+      icon: "Crown",
+    },
+    {
+      place: 2,
+      title: "Эко-инноватор квартала",
+      medal: "🌟",
+      gradient: "linear-gradient(135deg, #c0d6e4, #8fafc2)",
+      border: "#c0d6e4",
+      name: "Ольга М.",
+      points: 11_450,
+      desc: "Привлекла более 10 новых участников",
+      icon: "Lightbulb",
+    },
+    {
+      place: 3,
+      title: "Эко-вдохновитель квартала",
+      medal: "💚",
+      gradient: "linear-gradient(135deg, #a8d5b5, #4caf6f)",
+      border: "#a8d5b5",
+      name: "Игорь Т.",
+      points: 9_870,
+      desc: "Вдохновляет других своим примером",
+      icon: "Heart",
+    },
+  ];
+
+  const ranks = tab === "monthly" ? monthlyRanks : quarterlyRanks;
+  const period = tab === "monthly" ? "Апрель 2026" : "I квартал 2026";
+
+  return (
+    <div className="flex flex-col min-h-full" style={{ background: "#f0f9f4" }}>
+      {/* Header */}
+      <div
+        className="px-5 pt-5 pb-5"
+        style={{ background: "linear-gradient(160deg, #1a4a25 0%, #2d8f4e 100%)" }}
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div
+            className="w-10 h-10 rounded-2xl flex items-center justify-center"
+            style={{ background: "rgba(255,255,255,0.15)" }}
+          >
+            <Icon name="Trophy" size={20} className="text-yellow-300" />
+          </div>
+          <div>
+            <h2 className="text-white text-xl font-black">Рейтинг участников</h2>
+            <p className="text-green-200 text-xs">{period}</p>
+          </div>
+        </div>
+
+        {/* Tab switcher */}
+        <div
+          className="flex rounded-2xl p-1"
+          style={{ background: "rgba(0,0,0,0.25)" }}
+        >
+          {(["monthly", "quarterly"] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className="flex-1 py-2 rounded-xl text-sm font-bold transition-all duration-300"
+              style={
+                tab === t
+                  ? { background: "white", color: "#1a4a25" }
+                  : { color: "rgba(255,255,255,0.6)" }
+              }
+            >
+              {t === "monthly" ? "Ежемесячный" : "Квартальный"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Podium */}
+      <div className="px-5 py-5">
+        {/* Top-3 podium visual */}
+        <div className="flex items-end justify-center gap-3 mb-5" style={{ height: 120 }}>
+          {[1, 0, 2].map((idx) => {
+            const r = ranks[idx];
+            const heights = [88, 120, 72];
+            const podiumH = heights[idx === 0 ? 1 : idx === 1 ? 0 : 2];
+            return (
+              <div key={r.place} className="flex flex-col items-center gap-1" style={{ width: 90 }}>
+                <span className="text-lg">{r.medal}</span>
+                <p className="text-green-900 font-bold text-xs text-center leading-tight">{r.name}</p>
+                <div
+                  className="w-full flex items-center justify-center rounded-t-2xl"
+                  style={{
+                    height: podiumH,
+                    background: r.gradient,
+                    boxShadow: `0 4px 16px ${r.border}55`,
+                  }}
+                >
+                  <span className="text-white font-black text-lg">#{r.place}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Cards */}
+        <div className="flex flex-col gap-3">
+          {ranks.map((r) => (
+            <div
+              key={r.place}
+              className="rounded-3xl overflow-hidden"
+              style={{
+                background: "white",
+                border: `2px solid ${r.border}66`,
+                boxShadow: `0 4px 16px ${r.border}22`,
+              }}
+            >
+              <div className="flex items-center gap-3 p-4">
+                {/* Medal badge */}
+                <div
+                  className="w-14 h-14 rounded-2xl flex flex-col items-center justify-center shrink-0"
+                  style={{ background: r.gradient }}
+                >
+                  <span className="text-xl leading-none">{r.medal}</span>
+                  <span className="text-white font-black text-xs">#{r.place}</span>
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <Icon name={r.icon as "Crown"} size={14} className="text-yellow-500 shrink-0" />
+                    <p className="text-green-800 font-black text-sm truncate">{r.title}</p>
+                  </div>
+                  <p className="text-green-900 font-bold text-base">{r.name}</p>
+                  <p className="text-green-600 text-xs leading-tight">{r.desc}</p>
+                </div>
+
+                {/* Points */}
+                <div className="flex flex-col items-end shrink-0">
+                  <p className="font-black text-lg text-green-900">{r.points.toLocaleString("ru")}</p>
+                  <p className="text-green-500 text-xs">ЭКО баллов</p>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div style={{ background: "#f0f9f4", padding: "0 16px 12px" }}>
+                <div className="flex justify-between text-xs text-green-500 mb-1">
+                  <span>Прогресс</span>
+                  <span>{Math.round((r.points / (tab === "monthly" ? 6000 : 18000)) * 100)}%</span>
+                </div>
+                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "#d4edd9" }}>
+                  <div
+                    className="h-full rounded-full transition-all duration-700"
+                    style={{
+                      width: `${Math.round((r.points / (tab === "monthly" ? 6000 : 18000)) * 100)}%`,
+                      background: r.gradient,
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* My place hint */}
+        <div
+          className="mt-4 rounded-2xl p-4 flex items-center gap-3"
+          style={{ background: "linear-gradient(135deg, #e8f5ec, #d4edd9)", border: "1px solid #b2dbbf" }}
+        >
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: "#2d8f4e" }}
+          >
+            <Icon name="User" size={18} className="text-white" />
+          </div>
+          <div className="flex-1">
+            <p className="text-green-900 font-bold text-sm">Ваше место</p>
+            <p className="text-green-600 text-xs">Вы на 12-м месте • 1 240 ЭКО баллов</p>
+          </div>
+          <div className="text-right">
+            <p className="text-green-900 font-black text-base">#12</p>
+          </div>
         </div>
       </div>
     </div>
