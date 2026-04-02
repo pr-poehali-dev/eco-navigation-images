@@ -126,7 +126,7 @@ function HomeScreen({ onNavigate, bonuses }: { onNavigate: (s: Screen) => void; 
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-green-200 text-sm font-medium">Самарская область 🌍</p>
-              <h1 className="text-white text-2xl font-black tracking-tight">ЭкоБонус 🌿</h1>
+              <h1 className="text-white text-2xl font-black tracking-tight">ЭкоВклад 🌿</h1>
             </div>
             <button
               onClick={() => onNavigate("profile")}
