@@ -1,120 +1,151 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0d2b14"/>
-      <stop offset="100%" stop-color="#2d7a3e"/>
+      <stop offset="0%" stop-color="#0a2010"/>
+      <stop offset="50%" stop-color="#1a5c2e"/>
+      <stop offset="100%" stop-color="#2d8f4e"/>
     </linearGradient>
-    <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4caf6f"/>
-      <stop offset="100%" stop-color="#8bc34a"/>
+    <linearGradient id="mapFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3dba68"/>
+      <stop offset="100%" stop-color="#96d44a"/>
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#d0f0dc" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="mapShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="shadow">
-      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#000" flood-opacity="0.4"/>
+    <filter id="textShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
     </filter>
   </defs>
 
-  <!-- Rounded square background -->
-  <rect width="1024" height="1024" rx="220" ry="220" fill="url(#bg)"/>
+  <!-- Background rounded square -->
+  <rect width="1024" height="1024" rx="200" ry="200" fill="url(#bg)"/>
 
-  <!-- Subtle grid texture -->
-  <rect width="1024" height="1024" rx="220" ry="220" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <!-- Subtle inner highlight top -->
+  <rect x="0" y="0" width="1024" height="400" rx="200" fill="rgba(255,255,255,0.04)"/>
 
-  <!-- Samara Oblast map shape (stylized, accurate silhouette) -->
-  <!-- Самарская область: характерная форма — вытянутая слева, выступ Жигулей сверху, сужение внизу -->
-  <g transform="translate(512, 440) scale(1)" filter="url(#shadow)">
+  <!-- Декоративные круги на фоне -->
+  <circle cx="150" cy="180" r="220" fill="rgba(255,255,255,0.02)"/>
+  <circle cx="900" cy="820" r="280" fill="rgba(255,255,255,0.025)"/>
+
+  <!--
+    Карта Самарской области — характерная форма:
+    - Вытянутая по горизонтали
+    - Северный выступ (Жигулёвские горы / Жигулёвская излучина)
+    - Сужение в средней части (место изгиба Волги)
+    - Широкий восток
+    Масштаб: вписана в зону ~170–840 по X, ~200–730 по Y
+  -->
+  <g filter="url(#mapShadow)">
     <path d="
-      M -240 -180
-      L -260 -140
-      L -270 -80
-      L -255 -30
-      L -240 20
-      L -220 60
-      L -200 40
-      L -195 10
-      L -180 -10
-      L -175 30
-      L -155 70
-      L -130 100
-      L -95 120
-      L -70 130
-      L -60 160
-      L -30 175
-      L 0 180
-      L 30 175
-      L 60 160
-      L 90 140
-      L 120 120
-      L 150 90
-      L 180 60
-      L 200 20
-      L 220 -20
-      L 230 -70
-      L 215 -120
-      L 200 -160
-      L 170 -190
-      L 130 -200
-      L 100 -185
-      L 70 -195
-      L 40 -200
-      L 10 -195
-      L -20 -190
-      L -50 -200
-      L -80 -205
-      L -110 -200
-      L -150 -210
-      L -185 -205
-      L -220 -195
+      M 200 450
+      L 195 400
+      L 205 360
+      L 225 330
+      L 250 310
+      L 265 280
+      L 270 250
+      L 280 230
+      L 300 215
+      L 320 210
+      L 340 220
+      L 345 240
+      L 335 265
+      L 315 280
+      L 310 300
+      L 325 295
+      L 345 270
+      L 370 255
+      L 400 245
+      L 430 240
+      L 455 242
+      L 475 250
+      L 490 242
+      L 510 235
+      L 535 230
+      L 570 228
+      L 610 232
+      L 650 240
+      L 690 252
+      L 725 268
+      L 755 285
+      L 778 305
+      L 795 328
+      L 808 355
+      L 815 385
+      L 818 418
+      L 815 450
+      L 808 480
+      L 798 508
+      L 782 533
+      L 762 555
+      L 738 572
+      L 710 585
+      L 678 594
+      L 644 598
+      L 608 598
+      L 572 593
+      L 538 583
+      L 510 568
+      L 490 568
+      L 465 578
+      L 438 590
+      L 408 600
+      L 375 606
+      L 340 608
+      L 306 604
+      L 275 595
+      L 250 582
+      L 228 564
+      L 213 542
+      L 204 518
+      L 200 490
       Z
-    " fill="url(#mapGrad)" stroke="rgba(255,255,255,0.5)" stroke-width="4" filter="url(#glow)"/>
-
-    <!-- Жигулёвские горы — характерный выступ на севере -->
-    <path d="
-      M -60 -200
-      L -80 -230
-      L -60 -250
-      L -30 -240
-      L -10 -220
-      L 10 -200
-    " fill="url(#mapGrad)" stroke="rgba(255,255,255,0.5)" stroke-width="4"/>
-
-    <!-- Волга — белая линия через карту -->
-    <path d="M -180 -100 Q -100 -60 -60 0 Q -20 60 20 110 Q 50 145 70 165"
-          fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="6" stroke-linecap="round"/>
-
-    <!-- Лист в центре карты -->
-    <g transform="translate(60, -20)" filter="url(#glow)">
-      <ellipse cx="0" cy="0" rx="45" ry="60" fill="white" opacity="0.95" transform="rotate(-20)"/>
-      <ellipse cx="0" cy="0" rx="25" ry="45" fill="url(#mapGrad)" transform="rotate(-20)"/>
-      <line x1="0" y1="-55" x2="0" y2="55" stroke="white" stroke-width="2.5" opacity="0.8" transform="rotate(-20)"/>
-    </g>
-
-    <!-- Точка — Самара -->
-    <circle cx="80" cy="20" r="10" fill="white" opacity="0.9"/>
-    <circle cx="80" cy="20" r="5" fill="#f6c94e"/>
+    " fill="url(#mapFill)" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
   </g>
 
-  <!-- Название приложения -->
+  <!-- Волга — синяя линия через карту -->
+  <path d="M 270 310 Q 320 350 310 420 Q 300 490 340 545 Q 375 580 420 595"
+        fill="none" stroke="rgba(100,200,255,0.7)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Лист в центре карты -->
+  <g transform="translate(508, 418)" filter="url(#glowGreen)">
+    <!-- Тело листа -->
+    <ellipse cx="0" cy="-8" rx="52" ry="70" fill="url(#leafGrad)" transform="rotate(-10)"/>
+    <!-- Прожилка -->
+    <line x1="-8" y1="-72" x2="8" y2="62" stroke="rgba(45,143,78,0.6)" stroke-width="3" stroke-linecap="round" transform="rotate(-10)"/>
+    <!-- Боковые прожилки -->
+    <line x1="-8" y1="-30" x2="-42" y2="-5" stroke="rgba(45,143,78,0.35)" stroke-width="2" stroke-linecap="round" transform="rotate(-10)"/>
+    <line x1="-3" y1="5" x2="-40" y2="25" stroke="rgba(45,143,78,0.35)" stroke-width="2" stroke-linecap="round" transform="rotate(-10)"/>
+    <line x1="0" y1="-30" x2="38" y2="-8" stroke="rgba(45,143,78,0.35)" stroke-width="2" stroke-linecap="round" transform="rotate(-10)"/>
+    <line x1="2" y1="5" x2="36" y2="22" stroke="rgba(45,143,78,0.35)" stroke-width="2" stroke-linecap="round" transform="rotate(-10)"/>
+  </g>
+
+  <!-- Точка Самара -->
+  <circle cx="685" cy="420" r="12" fill="white" opacity="0.9"/>
+  <circle cx="685" cy="420" r="6" fill="#f6c94e"/>
+  <circle cx="685" cy="420" r="3" fill="#e8a800"/>
+
+  <!-- Надпись ЭкоВклад -->
   <text
     x="512"
-    y="760"
+    y="790"
     text-anchor="middle"
-    font-family="'Arial Rounded MT Bold', 'Nunito', Arial, sans-serif"
-    font-size="88"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="96"
     font-weight="900"
-    letter-spacing="2"
     fill="white"
+    filter="url(#textShadow)"
+    letter-spacing="1"
   >ЭкоВклад</text>
 
-  <!-- Подчёркивание под текстом -->
-  <rect x="270" y="778" width="484" height="5" rx="3" fill="url(#mapGrad)" opacity="0.8"/>
-
-  <!-- Декоративные точки-звёзды -->
-  <circle cx="200" cy="880" r="5" fill="rgba(255,255,255,0.2)"/>
-  <circle cx="824" cy="880" r="5" fill="rgba(255,255,255,0.2)"/>
-  <circle cx="160" cy="840" r="3" fill="rgba(76,175,111,0.4)"/>
-  <circle cx="864" cy="840" r="3" fill="rgba(76,175,111,0.4)"/>
+  <!-- Зелёная линия под текстом -->
+  <rect x="230" y="810" width="564" height="6" rx="3" fill="url(#mapFill)" opacity="0.7"/>
 </svg>
